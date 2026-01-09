@@ -49,6 +49,8 @@
   $: statusColor = span.status === 'error' ? 'text-red-500' : 'text-green-500';
   $: StatusIcon = span.status === 'error' ? XCircle : CheckCircle;
   $: TypeIcon = getIcon(span.type);
+  $: selectedStyle = selectedId === span.id ? 'background-color: var(--vscode-selection-bg); color: var(--vscode-link);' : '';
+  $: iconColor = selectedId === span.id ? 'var(--vscode-link)' : 'var(--vscode-secondary-fg)';
 
 </script>
 
@@ -57,7 +59,10 @@
     <Collapsible.Trigger class="w-full text-left relative group/row">
       <!-- Hover Guide Line (optional) -->
       <div 
-        class="flex items-center gap-1.5 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-sm px-2 cursor-pointer transition-colors {selectedId === span.id ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300'}"
+        class="flex items-center gap-1.5 py-1.5 rounded-sm px-2 cursor-pointer transition-colors"
+        style="{selectedStyle} {selectedId !== span.id ? 'color: var(--vscode-fg);' : ''}"
+        on:mouseenter={(e) => e.currentTarget.style.backgroundColor = selectedId !== span.id ? 'var(--vscode-hover-bg)' : ''}
+        on:mouseleave={(e) => e.currentTarget.style.backgroundColor = selectedId !== span.id ? '' : ''}
         on:click|stopPropagation={handleClick}
         role="button"
         tabindex="0"
@@ -66,7 +71,8 @@
         
         {#if hasChildren}
             <div 
-                class="text-gray-400 hover:text-gray-600 transition-transform duration-200" 
+                class="transition-transform duration-200" 
+                style="color: var(--vscode-secondary-fg);"
                 class:rotate-90={isOpen}
                 on:click|stopPropagation={() => isOpen = !isOpen}
                 role="button"
@@ -79,27 +85,27 @@
             <div class="w-[14px]"></div>
         {/if}
 
-        <TypeIcon size={14} class="{selectedId === span.id ? 'text-blue-500' : 'text-gray-400 group-hover/row:text-gray-500'}" />
+        <TypeIcon size={14} style="color: {iconColor};" />
         
         <span class="font-medium text-xs truncate flex-1 block" title={span.name}>{span.name}</span>
         
         <!-- Badges -->
-        <span class="text-[10px] font-mono px-1 rounded border border-gray-100 dark:border-gray-800 opacity-60">
+        <span class="text-[10px] font-mono px-1 rounded border opacity-60" style="border-color: var(--vscode-border);">
             {span.type}
         </span>
 
-        <div class="flex items-center gap-2 text-[10px] text-gray-400 ml-2">
+        <div class="flex items-center gap-2 text-[10px] ml-2" style="color: var(--vscode-secondary-fg);">
             {#if span.duration}
                 <span>{formatDuration(span.duration)}</span>
             {/if}
-            <StatusIcon size={12} class={statusColor} />
+            <StatusIcon size={12} style="color: {span.status === 'error' ? 'var(--vscode-error)' : 'var(--vscode-success)'};" />
         </div>
       </div>
     </Collapsible.Trigger>
 
     <Collapsible.Content>
       <!-- Children Container with Guide Line -->
-      <div class="pl-2 ml-[11px] border-l border-gray-200 dark:border-gray-800" transition:slide|local>
+      <div class="pl-2 ml-[11px] border-l" style="border-color: var(--vscode-border);" transition:slide|local>
          {#if hasChildren}
             <div class="pt-0.5">
                 {#each span.children as child}

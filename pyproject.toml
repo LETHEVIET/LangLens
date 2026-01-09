@@ -1,17 +1,21 @@
 [project]
-name = "langtrace"
+name = "langlens"
 version = "0.1.0"
-description = "Add your description here"
+description = "A visual tracer and debugger for LangChain and LangGraph"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "dearpygui>=2.1.1",
+    "langchain-core",
+]
+
+[project.optional-dependencies]
+demo = [
     "langchain[google-genai]>=1.2.2",
     "langchain-ollama>=1.0.1",
     "langgraph-cli[inmem]>=0.4.11",
     "langchain-groq>=1.1.1",
-    "pywebview>=6.1",
-    "qtpy>=2.4.3",
-    "pyqt5>=5.15.11",
-    "pyqtwebengine>=5.15.7",
+    "python-dotenv",
 ]
+
+[project.scripts]
+langlens = "langlens.cli:main"

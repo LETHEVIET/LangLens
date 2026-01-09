@@ -132,12 +132,9 @@
     {#if isPrimitive(value)}
         <div class="flex items-start">
             {#if keyName}
-                <span class="text-gray-500 mr-2 opacity-75">{keyName}:</span>
+                <span class="mr-2" style="color: var(--vscode-link);">{keyName}:</span>
             {/if}
-            <span class:text-green-600={typeof value === 'string'} 
-                  class:text-blue-600={typeof value === 'number'} 
-                  class:text-purple-600={typeof value === 'boolean'}
-                  class:text-gray-400={value === null || value === undefined}>
+            <span style="color: {typeof value === 'string' ? 'var(--vscode-success)' : typeof value === 'number' ? 'var(--vscode-link)' : typeof value === 'boolean' ? '#c586c0' : 'var(--vscode-secondary-fg)'}">
                 {formatPrimitive(value)}
             </span>
         </div>
@@ -276,19 +273,22 @@
     {:else if isArray}
         <div>
             <div 
-                class="flex items-center gap-1 cursor-pointer hover:text-blue-500 w-fit"
+                class="flex items-center gap-1 cursor-pointer w-fit"
+                style="color: var(--vscode-link);"
+                on:mouseenter={(e) => e.currentTarget.style.opacity = '0.8'}
+                on:mouseleave={(e) => e.currentTarget.style.opacity = '1'}
                 on:click={toggle}
                 on:keydown={(e) => e.key === 'Enter' && toggle()}
                 role="button"
                 tabindex="0"
             >
-                <div class:rotate-90={isOpen} class="transition-transform text-gray-400">
+                <div class:rotate-90={isOpen} class="transition-transform" style="color: var(--vscode-secondary-fg);">
                     <ChevronRight size={12} />
                 </div>
                 {#if keyName}
-                    <span class="text-gray-600 dark:text-gray-400 font-medium">{keyName}:</span>
+                    <span class="font-medium" style="color: var(--vscode-link);">{keyName}:</span>
                 {/if}
-                <span class="text-gray-400">Array({value.length})</span>
+                <span style="color: var(--vscode-secondary-fg);">Array({value.length})</span>
                 {#if isMessageList}
                     <span class="bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 px-1.5 rounded text-[10px] ml-2">Messages</span>
                 {/if}
@@ -307,19 +307,22 @@
     {:else if isObject}
         <div>
              <div 
-                class="flex items-center gap-1 cursor-pointer hover:text-blue-500 w-fit"
+                class="flex items-center gap-1 cursor-pointer w-fit"
+                style="color: var(--vscode-link);"
+                on:mouseenter={(e) => e.currentTarget.style.opacity = '0.8'}
+                on:mouseleave={(e) => e.currentTarget.style.opacity = '1'}
                 on:click={toggle}
                 on:keydown={(e) => e.key === 'Enter' && toggle()}
                 role="button"
                 tabindex="0"
             >
-                <div class:rotate-90={isOpen} class="transition-transform text-gray-400">
+                <div class:rotate-90={isOpen} class="transition-transform" style="color: var(--vscode-secondary-fg);">
                     <ChevronRight size={12} />
                 </div>
                 {#if keyName}
-                    <span class="text-gray-600 dark:text-gray-400 font-medium">{keyName}</span>
+                    <span class="font-medium" style="color: var(--vscode-link);">{keyName}</span>
                 {/if}
-                <span class="text-gray-400">{`{}`}</span>
+                <span style="color: var(--vscode-secondary-fg);">{`{}`}</span>
             </div>
 
             {#if isOpen}

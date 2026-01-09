@@ -1,13 +1,26 @@
 import json
+import os
 from datetime import datetime
 from uuid import UUID
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 from langchain_core.callbacks import BaseCallbackHandler
 
-class JsonLoggingCallbackHandler(BaseCallbackHandler):
-    def __init__(self, filename: str = "workflow_log.json"):
+class LangLensCallbackHandler(BaseCallbackHandler):
+    """
+    A LangChain callback handler that logs trace events to a .langlens file.
+    Supports both standard JSON array and JSONL (JSON Lines) formats.
+    """
+    def __init__(self, filename: str = "trace.langlens", use_jsonl: bool = True):
         self.filename = filename
+        self.use_jsonl = use_jsonl
         self.logs: List[Dict[str, Any]] = []
+        
+        # Clear or initialize file if not in JSONL mode
+        if not self.use_jsonl:
+            self._save_to_file()
+        elif os.path.exists(self.filename):
+            # Maybe optionally clear it? For now let's append.
+            pass
 
     def _ensure_serializable(self, obj: Any) -> Any:
         """
@@ -43,20 +56,28 @@ class JsonLoggingCallbackHandler(BaseCallbackHandler):
         entry = {
             "timestamp": datetime.utcnow().isoformat(),
             "event": event_name,
-            # We wrap the entire payload in our cleaner
             **self._ensure_serializable(payload)
         }
-        self.logs.append(entry)
-        self._save_to_file()
+        
+        if self.use_jsonl:
+            self._append_to_jsonl(entry)
+        else:
+            self.logs.append(entry)
+            self._save_to_file()
 
     def _save_to_file(self):
+        """Save the entire logs array to a JSON file."""
         with open(self.filename, "w", encoding="utf-8") as f:
             json.dump(self.logs, f, indent=2, ensure_ascii=False)
 
-    # --- UPDATED CALLBACKS WITH SAFE ACCESS ---
+    def _append_to_jsonl(self, entry: Dict[str, Any]):
+        """Append a single log entry to a JSONL file."""
+        with open(self.filename, "a", encoding="utf-8") as f:
+            f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+
+    # --- LangChain Callbacks ---
 
     def on_chain_start(self, serialized: Dict[str, Any], inputs: Dict[str, Any], **kwargs: Any) -> None:
-        # Use safe get to avoid 'NoneType' errors
         name = (serialized or {}).get("name") or "UnknownChain"
         self._log_event("chain_start", {"name": name, "inputs": inputs, **kwargs})
 

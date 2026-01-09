@@ -489,37 +489,42 @@
 <div 
     bind:clientWidth={containerWidth} 
     bind:clientHeight={containerHeight}
-    class="absolute inset-0 overflow-hidden bg-slate-50 dark:bg-slate-900/50"
+    class="absolute inset-0 overflow-hidden"
+    style="background-color: var(--vscode-panel-bg);"
     on:wheel|preventDefault={handleWheel}
     on:mousedown={(e) => handleMouseDown(e)}
     role="presentation"
 >
     <!-- Toolbar -->
-    <div class="absolute bottom-4 left-4 z-10 flex items-center space-x-1 p-1 bg-white/80 dark:bg-slate-800/80 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm">
+    <div class="absolute bottom-4 left-4 z-10 flex items-center space-x-1 p-1 backdrop-blur border rounded-lg shadow-sm" style="background-color: var(--vscode-input-bg); border-color: var(--vscode-border);">
         <button 
-            class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors text-slate-600 dark:text-slate-300" 
+            class="p-1.5 rounded transition-colors" 
+            style="color: var(--vscode-fg);"
             title="Zoom In"
             on:click={() => handleZoom(0.1)}
         >
             <ZoomIn size={18} />
         </button>
         <button 
-            class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors text-slate-600 dark:text-slate-300" 
+            class="p-1.5 rounded transition-colors" 
+            style="color: var(--vscode-fg);"
             title="Zoom Out"
             on:click={() => handleZoom(-0.1)}
         >
             <ZoomOut size={18} />
         </button>
-        <div class="w-px h-4 bg-slate-200 dark:bg-slate-700 mx-1"></div>
+        <div class="w-px h-4 mx-1" style="background-color: var(--vscode-border);"></div>
         <button 
-            class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors text-slate-600 dark:text-slate-300" 
+            class="p-1.5 rounded transition-colors" 
+            style="color: var(--vscode-fg);"
             title="Reset Zoom"
             on:click={handleReset}
         >
             <Maximize size={18} />
         </button>
         <button 
-            class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors text-slate-600 dark:text-slate-300" 
+            class="p-1.5 rounded transition-colors" 
+            style="color: var(--vscode-fg);"
             title="Auto Layout"
             on:click={applyAutoLayout}
         >
@@ -536,7 +541,7 @@
         >
             <defs>
                 <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-                    <polygon points="0 0, 10 3.5, 0 7" class="fill-slate-400 dark:fill-slate-600" />
+                    <polygon points="0 0, 10 3.5, 0 7" style="fill: var(--vscode-link);" />
                 </marker>
             </defs>
 
@@ -547,7 +552,7 @@
                         <path 
                             d={getLinkPath(link)}
                             fill="none" 
-                            class="stroke-slate-300 dark:stroke-slate-600"
+                            style="stroke: var(--vscode-link);"
                             stroke-width="1.5"
                             marker-end="url(#arrowhead)"
                         />
@@ -568,24 +573,24 @@
                                 width={node.width} 
                                 height={NODE_HEIGHT} 
                                 rx="6" 
-                                class="fill-white dark:fill-slate-800 {isNodeSelected(node, selectedId) ? 'stroke-blue-500 stroke-2 dark:stroke-blue-400' : 'stroke-slate-200 dark:stroke-slate-700'}"
+                                style="fill: var(--vscode-bg); stroke: {isNodeSelected(node, selectedId) ? 'var(--vscode-selection-bg)' : 'var(--vscode-border)'}; stroke-width: {isNodeSelected(node, selectedId) ? '2' : '1'};"
                             />
                             
                             <foreignObject width={node.width} height={NODE_HEIGHT}>
                                 <div class="w-full h-full flex items-center px-3 space-x-2 overflow-hidden noselect">
-                                    <div class="{node.span.status === 'error' ? 'text-red-500' : 'text-blue-500 dark:text-blue-400'}">
+                                    <div style="color: {node.span.status === 'error' ? 'var(--vscode-error)' : 'var(--vscode-link)'};">
                                         <svelte:component this={getIcon(node.span.type, node.span.name)} size={16} />
                                     </div>
                                     <div class="flex-1 min-w-0 flex flex-col justify-center">
                                         <div class="flex items-center gap-1.5">
-                                            <div class="text-xs font-medium truncate text-slate-700 dark:text-slate-200">{node.span.name}</div>
+                                            <div class="text-xs font-medium truncate" style="color: var(--vscode-fg);">{node.span.name}</div>
                                             {#if node.span.metadata?.compact_count}
-                                                <span class="px-1.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 text-[9px] font-bold leading-none border border-slate-200 dark:border-slate-600">
+                                                <span class="px-1.5 py-0.5 rounded-full text-[9px] font-bold leading-none border" style="background-color: var(--vscode-input-bg); color: var(--vscode-secondary-fg); border-color: var(--vscode-border);">
                                                     {node.span.metadata.compact_count}
                                                 </span>
                                             {/if}
                                         </div>
-                                        <div class="text-[10px] text-slate-500 dark:text-slate-400 truncate flex justify-between gap-1 text-right">
+                                        <div class="text-[10px] truncate flex justify-between gap-1 text-right" style="color: var(--vscode-secondary-fg);">
                                             <span class="truncate opacity-75">{node.span.type}</span>
                                             <span class="font-mono tabular-nums">{node.span.duration ? (node.span.duration * 1000).toFixed(0) + 'ms' : ''}</span>
                                         </div>

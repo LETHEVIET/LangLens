@@ -1,11 +1,27 @@
-# Python-generated files
+# Python
 __pycache__/
-*.py[oc]
-build/
-dist/
-wheels/
-*.egg-info
-
-# Virtual environments
-.venv
+*.py[cod]
+.venv/
 .env
+dist/
+build/
+*.egg-info/
+
+# Node.js
+node_modules/
+**/node_modules/
+.svelte-kit/
+.DS_Store
+
+# Build Artifacts (UI)
+web-ui/build/
+langlens/viewer/static/
+
+# VS Code Extension
+vscode-extension/out/
+vscode-extension/media/
+vscode-extension/*.vsix
+
+# langlens Logs
+*.langlens
+*.jsonl

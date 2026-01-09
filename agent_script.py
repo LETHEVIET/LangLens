@@ -19,7 +19,7 @@ from langchain.chat_models import init_chat_model
 from langchain.messages import HumanMessage, ToolMessage
 from langchain.tools import tool, ToolRuntime
 
-from json_callback_handler import JsonLoggingCallbackHandler
+from langlens import LangLensCallbackHandler
 
 import dotenv
 dotenv.load_dotenv()
@@ -211,7 +211,7 @@ agent = create_agent(
 # ============================================================================
 
 if __name__ == "__main__":
-    callback_handler = JsonLoggingCallbackHandler()
+    callback_handler = LangLensCallbackHandler(filename="logs.langlens")
     thread_id = str(uuid.uuid4())
     config = {"configurable": {"thread_id": thread_id}, "callbacks": [callback_handler]}
 

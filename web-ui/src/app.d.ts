@@ -8,6 +8,11 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+	function acquireVsCodeApi(): {
+		postMessage(message: any): void;
+		getState(): any;
+		setState(state: any): void;
+	};
 }
 
 export {};
