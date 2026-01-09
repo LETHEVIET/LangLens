@@ -86,7 +86,22 @@ export class LangLensEditorProvider implements vscode.CustomTextEditorProvider {
         html = html.replace(/base:\s*new URL\([^)]+\)\.pathname\.slice\([^)]+\)/g, 'base: ""');
         
         // Inject CSS links for the app (SvelteKit doesn't include them in fallback)
-        const cssLinks = `\n\t<link rel="stylesheet" href="./_app/immutable/assets/0.DtSUOiyh.css">\n\t<link rel="stylesheet" href="./_app/immutable/assets/2.BJeb8yqE.css">`;
+        const assetsPath = path.join(mediaPath, '_app', 'immutable', 'assets');
+        let cssLinks = '';
+        
+        try {
+            if (fs.existsSync(assetsPath)) {
+                const files = fs.readdirSync(assetsPath);
+                files.forEach(file => {
+                    if (file.endsWith('.css')) {
+                        cssLinks += `\n\t<link rel="stylesheet" href="./_app/immutable/assets/${file}">`;
+                    }
+                });
+            }
+        } catch (e) {
+            console.error('Error finding CSS files:', e);
+        }
+
         html = html.replace('</head>', `${cssLinks}\n\t</head>`);
 
         return html;
