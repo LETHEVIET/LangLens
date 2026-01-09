@@ -31,6 +31,15 @@ export class LogParser {
             if (log.metadata) {
                 Object.assign(span.metadata, log.metadata);
             }
+            if (log.tags) {
+                if (!span.tags) span.tags = [];
+                // Merge tags uniquely
+                for (const t of log.tags) {
+                    if (!span.tags.includes(t)) {
+                        span.tags.push(t);
+                    }
+                }
+            }
 
             const eventName = log.event || "";
             const data = log.data || {};

@@ -4,12 +4,26 @@
     import type { Span, LogEvent } from "$lib/types";
     import TreeNode from "$lib/TreeNode.svelte";
     import DataViewer from "$lib/DataViewer.svelte";
+    import TraceGraph from "$lib/TraceGraph.svelte";
+    import JSONTree from "@sveltejs/svelte-json-tree";
 
     let spans: Span[] = [];
     let loading = true;
     let error: string | null = null;
     let selectedSpan: Span | null = null;
     let viewMode: "pretty" | "raw" = "pretty";
+    let graphMode: "compact" | "flow" = "compact";
+
+    $: activeRoot = selectedSpan ? findRoot(selectedSpan.id) : null;
+
+    function findRoot(id: string): Span | undefined {
+        return spans.find(r => r.id === id || hasChild(r, id));
+    }
+
+    function hasChild(node: Span, id: string): boolean {
+        if (node.id === id) return true;
+        return node.children.some(c => hasChild(c, id));
+    }
 
     function handleSelectSpan(event: CustomEvent<Span>) {
         selectedSpan = event.detail;
@@ -81,30 +95,64 @@
 >
 
     <div class="flex flex-1 overflow-hidden">
-        <!-- Sidebar Tree -->
-        <aside class="w-1/3 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 overflow-y-auto p-4">
-            {#if error}
-                <div class="p-4 bg-red-50 text-red-600 rounded border border-red-200">
-                    {error}
-                </div>
-            {:else if loading}
-                <div class="space-y-4 animate-pulse">
-                    <div class="h-8 bg-gray-200 dark:bg-gray-800 rounded w-full"></div>
-                    <div class="h-8 bg-gray-200 dark:bg-gray-800 rounded w-5/6"></div>
-                    <div class="h-8 bg-gray-200 dark:bg-gray-800 rounded w-4/6"></div>
-                </div>
-            {:else}
-                <div class="space-y-1">
-                    {#each spans as span}
-                        <TreeNode {span} on:select={handleSelectSpan} selectedId={selectedSpan?.id} />
-                    {/each}
-                </div>
-
-                {#if spans.length === 0}
-                    <div class="text-center py-20 text-gray-400">
-                        No traces found in logs.
+        <!-- Sidebar -->
+        <aside class="w-1/3 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 flex flex-col overflow-hidden">
+            <!-- Tree Container -->
+            <div class="flex-1 overflow-y-auto p-4">
+                {#if error}
+                    <div class="p-4 bg-red-50 text-red-600 rounded border border-red-200">
+                        {error}
                     </div>
+                {:else if loading}
+                    <div class="space-y-4 animate-pulse">
+                        <div class="h-8 bg-gray-200 dark:bg-gray-800 rounded w-full"></div>
+                        <div class="h-8 bg-gray-200 dark:bg-gray-800 rounded w-5/6"></div>
+                        <div class="h-8 bg-gray-200 dark:bg-gray-800 rounded w-4/6"></div>
+                    </div>
+                {:else}
+                    <div class="space-y-1">
+                        {#each spans as span}
+                            <TreeNode {span} on:select={handleSelectSpan} selectedId={selectedSpan?.id} />
+                        {/each}
+                    </div>
+
+                    {#if spans.length === 0}
+                        <div class="text-center py-20 text-gray-400">
+                            No traces found in logs.
+                        </div>
+                    {/if}
                 {/if}
+            </div>
+
+            <!-- Graph Stick at Bottom -->
+            {#if activeRoot}
+                <div class="h-1/2 border-t border-gray-200 dark:border-gray-800 bg-slate-50/50 dark:bg-slate-900/20 flex flex-col">
+                    <div class="flex justify-between items-center p-3 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950">
+                        <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Trace Flow</h3>
+                        <div class="flex bg-gray-100 dark:bg-gray-900 rounded p-0.5 scale-90">
+                            <button 
+                                class="px-2 py-0.5 rounded text-[10px] {graphMode === 'compact' ? 'bg-white dark:bg-gray-800 shadow-sm text-blue-600 font-bold' : 'text-gray-500 hover:text-gray-700'}"
+                                on:click={() => graphMode = 'compact'}
+                            >
+                                Compact
+                            </button>
+                            <button 
+                                class="px-2 py-0.5 rounded text-[10px] {graphMode === 'flow' ? 'bg-white dark:bg-gray-800 shadow-sm text-blue-600 font-bold' : 'text-gray-500 hover:text-gray-700'}"
+                                on:click={() => graphMode = 'flow'}
+                            >
+                                Flow
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-h-0 relative">
+                        <TraceGraph 
+                            rootSpan={activeRoot} 
+                            selectedId={selectedSpan?.id} 
+                            viewMode={graphMode}
+                            on:select={handleSelectSpan}
+                        />
+                    </div>
+                </div>
             {/if}
         </aside>
 
@@ -164,8 +212,8 @@
                                 </div>
                             </div>
                         {:else}
-                            <div class="bg-gray-900 text-gray-100 p-4 rounded font-mono text-xs overflow-auto h-full">
-                                <pre>{JSON.stringify(selectedSpan, null, 2)}</pre>
+                            <div class="p-4 rounded font-mono text-xs overflow-auto h-full border border-gray-800">
+                                <JSONTree value={selectedSpan} defaultExpandedLevel={1} />
                             </div>
                         {/if}
                     </div>

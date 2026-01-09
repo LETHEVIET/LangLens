@@ -21,6 +21,7 @@ export interface Span {
     duration?: number | null;
     inputs?: any;
     outputs?: any;
+    tags?: string[];
     metadata: Record<string, any>;
     events: LogEvent[];
     children: Span[];
