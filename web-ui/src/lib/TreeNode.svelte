@@ -52,11 +52,12 @@
 
 </script>
 
-<div class="border-l border-gray-200 dark:border-gray-700 ml-4 pl-2">
+<div class="ml-2">
   <Collapsible.Root bind:open={isOpen}>
-    <Collapsible.Trigger class="w-full text-left">
+    <Collapsible.Trigger class="w-full text-left relative group/row">
+      <!-- Hover Guide Line (optional) -->
       <div 
-        class="flex items-center gap-2 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded px-2 cursor-pointer group {selectedId === span.id ? 'bg-blue-50 dark:bg-blue-900/20 ring-1 ring-blue-500/20' : ''}"
+        class="flex items-center gap-1.5 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-sm px-2 cursor-pointer transition-colors {selectedId === span.id ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300'}"
         on:click|stopPropagation={handleClick}
         role="button"
         tabindex="0"
@@ -65,45 +66,42 @@
         
         {#if hasChildren}
             <div 
-                class="text-gray-400 group-hover:text-gray-600 transition-transform duration-200" 
+                class="text-gray-400 hover:text-gray-600 transition-transform duration-200" 
                 class:rotate-90={isOpen}
                 on:click|stopPropagation={() => isOpen = !isOpen}
                 role="button"
                 tabindex="0"
                 on:keydown={(e) => e.key === 'Enter' && (isOpen = !isOpen)}
             >
-                <ChevronRight size={16} />
+                <ChevronRight size={14} />
             </div>
         {:else}
-            <div class="w-4"></div>
+            <div class="w-[14px]"></div>
         {/if}
 
-        <TypeIcon size={16} class="text-blue-500" />
+        <TypeIcon size={14} class="{selectedId === span.id ? 'text-blue-500' : 'text-gray-400 group-hover/row:text-gray-500'}" />
         
-        <span class="font-medium text-sm text-gray-900 dark:text-gray-100">{span.name}</span>
+        <span class="font-medium text-xs truncate flex-1 block" title={span.name}>{span.name}</span>
         
-        <span class="text-xs text-gray-500 font-mono bg-gray-100 dark:bg-gray-900 px-1 rounded">{span.type}</span>
+        <!-- Badges -->
+        <span class="text-[10px] font-mono px-1 rounded border border-gray-100 dark:border-gray-800 opacity-60">
+            {span.type}
+        </span>
 
-        <div class="flex-grow"></div>
-
-        <div class="flex items-center gap-4 text-xs text-gray-500">
+        <div class="flex items-center gap-2 text-[10px] text-gray-400 ml-2">
             {#if span.duration}
-                <div class="flex items-center gap-1">
-                    <Clock size={12} />
-                    <span>{formatDuration(span.duration)}</span>
-                </div>
+                <span>{formatDuration(span.duration)}</span>
             {/if}
-            <StatusIcon size={14} class={statusColor} />
+            <StatusIcon size={12} class={statusColor} />
         </div>
       </div>
     </Collapsible.Trigger>
 
     <Collapsible.Content>
-      <div class="pl-8 pr-2 pb-2" transition:slide>
-         
-         <!-- Recursive Children -->
+      <!-- Children Container with Guide Line -->
+      <div class="pl-2 ml-[11px] border-l border-gray-200 dark:border-gray-800" transition:slide|local>
          {#if hasChildren}
-            <div class="mt-2 text-sm">
+            <div class="pt-0.5">
                 {#each span.children as child}
                     <svelte:self span={child} level={level + 1} on:select={handleChildSelect} {selectedId} />
                 {/each}

@@ -112,28 +112,6 @@
         <main class="flex-1 bg-gray-50 dark:bg-gray-900 overflow-y-auto">
             {#if selectedSpan}
                 <div class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 h-full flex flex-col">
-                    <!-- Header -->
-                    <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-white dark:bg-gray-800 rounded-t-lg sticky top-0 z-10">
-                        <div>
-                            <h2 class="text-lg font-semibold">{selectedSpan.name}</h2>
-                            <div class="text-xs text-gray-500 font-mono mt-1">{selectedSpan.id}</div>
-                        </div>
-                        <div class="flex bg-gray-100 dark:bg-gray-900 rounded p-1">
-                            <button 
-                                class="px-3 py-1 rounded text-sm transition-colors {viewMode === 'pretty' ? 'bg-white dark:bg-gray-800 shadow text-blue-600 dark:text-blue-400 font-medium' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'}"
-                                on:click={() => viewMode = 'pretty'}
-                            >
-                                Pretty
-                            </button>
-                            <button 
-                                class="px-3 py-1 rounded text-sm transition-colors {viewMode === 'raw' ? 'bg-white dark:bg-gray-800 shadow text-blue-600 dark:text-blue-400 font-medium' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'}"
-                                on:click={() => viewMode = 'raw'}
-                            >
-                                Raw
-                            </button>
-                        </div>
-                    </div>
-
                     <!-- Content -->
                     <div class="flex-1 overflow-y-auto p-4">
                         {#if viewMode === 'pretty'}
@@ -190,6 +168,28 @@
                                 <pre>{JSON.stringify(selectedSpan, null, 2)}</pre>
                             </div>
                         {/if}
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="p-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center bg-white dark:bg-gray-800 rounded-t-lg sticky top-0 z-10">
+                        <div>
+                            <h2 class="text-lg font-semibold">{selectedSpan.name}</h2>
+                            <div class="text-xs text-gray-500 font-mono mt-1">{selectedSpan.id}</div>
+                        </div>
+                        <div class="flex bg-gray-100 dark:bg-gray-900 rounded p-1">
+                            <button 
+                                class="px-3 py-1 rounded text-sm transition-colors {viewMode === 'pretty' ? 'bg-white dark:bg-gray-800 shadow text-blue-600 dark:text-blue-400 font-medium' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'}"
+                                on:click={() => viewMode = 'pretty'}
+                            >
+                                Pretty
+                            </button>
+                            <button 
+                                class="px-3 py-1 rounded text-sm transition-colors {viewMode === 'raw' ? 'bg-white dark:bg-gray-800 shadow text-blue-600 dark:text-blue-400 font-medium' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'}"
+                                on:click={() => viewMode = 'raw'}
+                            >
+                                Raw
+                            </button>
+                        </div>
                     </div>
                 </div>
             {:else}
