@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="web-ui/static/logo.svg" alt="LangLens Logo" width="600">
+  <img src="web-ui/static/logo.svg" alt="LangLens Logo" width="400">
 </p>
 
 # LangLens
@@ -46,12 +46,27 @@ To use the extension locally:
 1. Open the `/vscode-extension` folder in VS Code.
 2. Run `pnpm install`.
 3. Press `F5` to start a new Extension Development Host window with the extension loaded.
-4. (Alternatively) Package it into a `.vsix` file:
 
-   ```bash
-   npx vsce package
-   code --install-extension langlens-viewer-0.1.0.vsix
-   ```
+## 📦 Packaging and Releases
+
+To build both the Python package and the VS Code extension for distribution, you can use the provided script:
+
+```bash
+./scripts/package.sh
+```
+
+This will:
+
+1. Build the Web UI.
+2. Generate Python `.whl` and `.tar.gz` files in `dist/`.
+3. Generate a VS Code `.vsix` file in `dist/`.
+
+### Continuous Integration
+
+This project includes a GitHub Action workflow in `.github/workflows/release.yml`. When you push a tag (e.g., `v0.1.0`), it will automatically:
+
+- Build all packages.
+- Create a GitHub Release with the artifacts attached.
 
 ## 🚀 Quick Start
 

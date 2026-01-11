@@ -8,6 +8,13 @@ dependencies = [
     "langchain-core",
 ]
 
+[tool.setuptools]
+packages = ["langlens", "langlens.viewer"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"langlens.viewer" = ["static/**/*"]
+
 [project.optional-dependencies]
 demo = [
     "langchain[google-genai]>=1.2.2",
