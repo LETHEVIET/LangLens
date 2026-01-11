@@ -4,27 +4,27 @@
 
 /* VS Code Theme Variables */
 :root {
-	/* Use VS Code colors when available */
-	--vscode-bg: var(--vscode-editor-background, #1e1e1e);
-	--vscode-fg: var(--vscode-editor-foreground, #d4d4d4);
-	--vscode-border: var(--vscode-panel-border, #3e3e3e);
-	--vscode-panel-bg: var(--vscode-panel-background, #252526);
-	--vscode-button-bg: var(--vscode-button-background, #0e639c);
-	--vscode-button-hover: var(--vscode-button-hoverBackground, #1177bb);
-	--vscode-input-bg: var(--vscode-input-background, #3c3c3c);
-	--vscode-selection-bg: var(--vscode-list-activeSelectionBackground, #094771);
-	--vscode-hover-bg: var(--vscode-list-hoverBackground, #2a2d2e);
-	--vscode-secondary-fg: var(--vscode-descriptionForeground, #ccccccb3);
-	--vscode-error: var(--vscode-errorForeground, #f48771);
-	--vscode-success: var(--vscode-terminal-ansiGreen, #4ec9b0);
-	--vscode-link: var(--vscode-textLink-foreground, #3794ff);
+  /* Use VS Code colors when available */
+  --vscode-bg: var(--vscode-editor-background, #1e1e1e);
+  --vscode-fg: var(--vscode-editor-foreground, #d4d4d4);
+  --vscode-border: var(--vscode-panel-border, #3e3e3e);
+  --vscode-panel-bg: var(--vscode-panel-background, #252526);
+  --vscode-button-bg: var(--vscode-button-background, #0e639c);
+  --vscode-button-hover: var(--vscode-button-hoverBackground, #1177bb);
+  --vscode-input-bg: var(--vscode-input-background, #3c3c3c);
+  --vscode-selection-bg: var(--vscode-list-activeSelectionBackground, #094771);
+  --vscode-hover-bg: var(--vscode-list-hoverBackground, #2a2d2e);
+  --vscode-secondary-fg: var(--vscode-descriptionForeground, #ccccccb3);
+  --vscode-error: var(--vscode-errorForeground, #f48771);
+  --vscode-success: var(--vscode-terminal-ansiGreen, #4ec9b0);
+  --vscode-link: var(--vscode-textLink-foreground, #3794ff);
 }
 
 body {
-	background-color: var(--vscode-bg);
-	color: var(--vscode-fg);
-	font-family: var(--vscode-font-family, system-ui, -apple-system, sans-serif);
-	font-size: var(--vscode-font-size, 13px);
-	margin: 0;
-	padding: 0;
+  background-color: var(--vscode-bg);
+  color: var(--vscode-fg);
+  font-family: var(--vscode-font-family, system-ui, -apple-system, sans-serif);
+  font-size: var(--vscode-font-size, 13px);
+  margin: 0;
+  padding: 0;
 }

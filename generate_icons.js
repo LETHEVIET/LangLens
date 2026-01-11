@@ -1,22 +1,21 @@
-
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 // Configuration
 const canvas_size = 512; // Reduced from 800 to be tighter
 const cx = canvas_size / 2;
 const cy = canvas_size / 2;
-const card_w = 420;  // Reduced to fit tighter around content
-const card_h = 280;  // Reduced to fit tighter
-const card_r = 24;   // Scaled down slightly
+const card_w = 420; // Reduced to fit tighter around content
+const card_h = 280; // Reduced to fit tighter
+const card_r = 24; // Scaled down slightly
 
 const colors = {
-    bg: "#ffffff",
-    textPrimary: "#0f172a",
-    textAccent: "#10b981", 
-    brandPrimary: "#6366f1", 
-    cardBorder: "#f1f5f9",
-    shadow: "rgba(99, 102, 241, 0.15)"
+  bg: "#ffffff",
+  textPrimary: "#0f172a",
+  textAccent: "#10b981",
+  brandPrimary: "#6366f1",
+  cardBorder: "#f1f5f9",
+  shadow: "rgba(99, 102, 241, 0.15)",
 };
 
 // Values from snippet
@@ -32,7 +31,7 @@ const colors = {
 // Let's tweak positions manually for visual balance.
 
 function generate_logo_svg() {
-    const svg = `<?xml version="1.0" encoding="UTF-8"?>
+  const svg = `<?xml version="1.0" encoding="UTF-8"?>
 <svg width="${canvas_size}" height="${canvas_size}" viewBox="0 0 ${canvas_size} ${canvas_size}" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -123,11 +122,11 @@ function generate_logo_svg() {
         </text>
       </g>
     </svg>`;
-    return svg;
+  return svg;
 }
 
 function generate_favicon_svg() {
-    const svg = `<?xml version="1.0" encoding="UTF-8"?>
+  const svg = `<?xml version="1.0" encoding="UTF-8"?>
 <svg width="128" height="128" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
          <defs>
             <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -151,57 +150,74 @@ function generate_favicon_svg() {
             <path d="M70,60 L86,76" style="fill:none; stroke:${colors.textAccent}; stroke-width:8; stroke-linecap:round;" />
         </g>
     </svg>`;
-    return svg;
+  return svg;
 }
 
-const opentype = require('opentype.js');
+const opentype = require("opentype.js");
 
 if (require.main === module) {
-    const output_dir = "/mnt/data/code/langlens/web-ui/static";
-    const font_dir = "/mnt/data/code/langlens/web-ui/static/fonts";
-    
-    if (!fs.existsSync(output_dir)){
-        fs.mkdirSync(output_dir, { recursive: true });
-    }
+  const output_dir = "/mnt/data/code/langlens/web-ui/static";
+  const font_dir = "/mnt/data/code/langlens/web-ui/static/fonts";
 
-    // Load fonts
-    const fontPJSBold = opentype.loadSync(`${font_dir}/PlusJakartaSans-Bold.ttf`);
-    const fontPJSExtraBold = opentype.loadSync(`${font_dir}/PlusJakartaSans-ExtraBold.ttf`);
-    const fontJBMonoBold = opentype.loadSync(`${font_dir}/JetBrainsMono-Bold.ttf`);
+  if (!fs.existsSync(output_dir)) {
+    fs.mkdirSync(output_dir, { recursive: true });
+  }
 
-    function generate_logo_svg_paths() {
-        // Text Parameters
-        const titleSize = 64;
-        const subTitleSize = 11;
-        
-        // Calculate paths
-        // "Lang" - ExtraBold (800)
-        const pathLang = fontPJSExtraBold.getPath('Lang', 0, 0, titleSize);
-        const widthLang = fontPJSExtraBold.getAdvanceWidth('Lang', titleSize);
-        
-        const pathLens = fontPJSExtraBold.getPath('Lens', widthLang, 0, titleSize);
-        const widthLens = fontPJSExtraBold.getAdvanceWidth('Lens', titleSize);
-        
-        const totalTitleWidth = widthLang + widthLens;
-        
-        // JetBrains Mono for Subtitle
-        const subtitleText = "NODE-LEVEL OBSERVABILITY";
-        const pathSubtitle = fontJBMonoBold.getPath(subtitleText, 0, 0, subTitleSize);
-        const widthSubtitle = fontJBMonoBold.getAdvanceWidth(subtitleText, subTitleSize);
-        
-        // --- Centering Logic ---
-        const titleStartX = -totalTitleWidth / 2;
-        
-        // Apply Color and Translation
-        // Note: We inject colors via fill attribute on the path element later
-        
-        const stringLang = pathLang.toPathData(2);
-        const stringLens = pathLens.toPathData(2);
-        
-        const subtitleStartX = -widthSubtitle / 2;
-        const pSubFinal = fontJBMonoBold.getPath(subtitleText, subtitleStartX, 40, subTitleSize);
+  // Load fonts
+  const fontPJSBold = opentype.loadSync(`${font_dir}/PlusJakartaSans-Bold.ttf`);
+  const fontPJSExtraBold = opentype.loadSync(
+    `${font_dir}/PlusJakartaSans-ExtraBold.ttf`,
+  );
+  const fontJBMonoBold = opentype.loadSync(
+    `${font_dir}/JetBrainsMono-Bold.ttf`,
+  );
 
-        const svg = `<?xml version="1.0" encoding="UTF-8"?>
+  function generate_logo_svg_paths() {
+    // Text Parameters
+    const titleSize = 64;
+    const subTitleSize = 11;
+
+    // Calculate paths
+    // "Lang" - ExtraBold (800)
+    const pathLang = fontPJSExtraBold.getPath("Lang", 0, 0, titleSize);
+    const widthLang = fontPJSExtraBold.getAdvanceWidth("Lang", titleSize);
+
+    const pathLens = fontPJSExtraBold.getPath("Lens", widthLang, 0, titleSize);
+    const widthLens = fontPJSExtraBold.getAdvanceWidth("Lens", titleSize);
+
+    const totalTitleWidth = widthLang + widthLens;
+
+    // JetBrains Mono for Subtitle
+    const subtitleText = "NODE-LEVEL OBSERVABILITY";
+    const pathSubtitle = fontJBMonoBold.getPath(
+      subtitleText,
+      0,
+      0,
+      subTitleSize,
+    );
+    const widthSubtitle = fontJBMonoBold.getAdvanceWidth(
+      subtitleText,
+      subTitleSize,
+    );
+
+    // --- Centering Logic ---
+    const titleStartX = -totalTitleWidth / 2;
+
+    // Apply Color and Translation
+    // Note: We inject colors via fill attribute on the path element later
+
+    const stringLang = pathLang.toPathData(2);
+    const stringLens = pathLens.toPathData(2);
+
+    const subtitleStartX = -widthSubtitle / 2;
+    const pSubFinal = fontJBMonoBold.getPath(
+      subtitleText,
+      subtitleStartX,
+      40,
+      subTitleSize,
+    );
+
+    const svg = `<?xml version="1.0" encoding="UTF-8"?>
 <svg width="${canvas_size}" height="${canvas_size}" viewBox="0 0 ${canvas_size} ${canvas_size}" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -274,11 +290,11 @@ if (require.main === module) {
         <path d="${pSubFinal.toPathData(2)}" fill="${colors.brandPrimary}" opacity="0.8" />
       </g>
     </svg>`;
-        return svg;
-    }
-    
-    fs.writeFileSync(`${output_dir}/logo.svg`, generate_logo_svg_paths());
-    fs.writeFileSync(`${output_dir}/favicon.svg`, generate_favicon_svg()); 
-        
-    console.log("Files created with vector paths.");
+    return svg;
+  }
+
+  fs.writeFileSync(`${output_dir}/logo.svg`, generate_logo_svg_paths());
+  fs.writeFileSync(`${output_dir}/favicon.svg`, generate_favicon_svg());
+
+  console.log("Files created with vector paths.");
 }

@@ -8,6 +8,8 @@
 
 LangLens is a lightweight visual tracer and debugger designed specifically for LLM-powered applications. It captures detailed execution logs from your agents and chains, allowing you to inspect every LLM call, tool execution, and state transition with precision.
 
+![LangLens Screenshot](assests/screenshoot.png)
+
 ---
 
 ## ✨ Features
@@ -17,6 +19,39 @@ LangLens is a lightweight visual tracer and debugger designed specifically for L
 - 💻 **VS Code Extension**: Debug your traces directly inside VS Code with a custom editor experience.
 - 🚀 **CLI Tool**: Quickly host a local viewer for any `.langlens` file.
 - 🔌 **Seamless Integration**: Add observability to your existing projects with a single line of code.
+
+---
+
+## 🏗️ How it Works
+
+LangLens bridges the gap between your LLM execution and visual debugging:
+
+```mermaid
+graph TD
+    subgraph "Capture Phase"
+    A[LLM App] -- "1. LangChain Callbacks" --> B(LangLens Handler)
+    B -- "2. Stream Events" --> C[[.langlens file]]
+    end
+
+    subgraph "Visualization Phase"
+    C -- "3a. CLI Server" --> D[Web Browser]
+    C -- "3b. Custom Editor" --> E[VS Code IDE]
+
+    D --> F{Interactive UI}
+    E --> F
+
+    F -- "4. Inspect Nodes" --> G[Observability & Debugging]
+    end
+```
+
+1. **Capture**: The `LangLensCallbackHandler` hooks into LangChain's event system to record starts, ends, and errors of every chain, tool, and LLM call.
+2. **Storage**: Events are serialized and saved into a `.langlens` file (JSONL format), providing a portable trace of the entire execution.
+3. **Visualization**:
+   - The **CLI Tool** launches a local Python server that hosts a Svelte-based frontend.
+   - The **VS Code Extension** registers as a custom editor for `.langlens` files, embedding the same Svelte UI directly into your workspace.
+4. **Debugging**: Use the interactive graph to navigate complex agentic workflows and inspect raw inputs/outputs at any level of the tree.
+
+---
 
 ## 📦 Installation
 

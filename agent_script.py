@@ -14,7 +14,12 @@ from typing import Callable, Literal
 from typing_extensions import NotRequired
 
 from langchain.agents import AgentState, create_agent
-from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse, SummarizationMiddleware
+from langchain.agents.middleware import (
+    wrap_model_call,
+    ModelRequest,
+    ModelResponse,
+    SummarizationMiddleware,
+)
 from langchain.chat_models import init_chat_model
 from langchain.messages import HumanMessage, ToolMessage
 from langchain.tools import tool, ToolRuntime
@@ -22,6 +27,7 @@ from langchain.tools import tool, ToolRuntime
 from langlens import LangLensCallbackHandler
 
 import dotenv
+
 dotenv.load_dotenv()
 
 model_string = "groq:qwen/qwen3-32b"
@@ -197,10 +203,8 @@ agent = create_agent(
     middleware=[
         apply_step_config,
         SummarizationMiddleware(
-            model=model_string,
-            trigger=("tokens", 4000),
-            keep=("messages", 10)
-        )
+            model=model_string, trigger=("tokens", 4000), keep=("messages", 10)
+        ),
     ],
     checkpointer=InMemorySaver(),
 )
@@ -211,10 +215,11 @@ agent = create_agent(
 # ============================================================================
 
 if __name__ == "__main__":
-    callback_handler = LangLensCallbackHandler(filename="logs.langlens")
     thread_id = str(uuid.uuid4())
-    config = {"configurable": {"thread_id": thread_id}, "callbacks": [callback_handler]}
 
+    callback_handler = LangLensCallbackHandler(filename="logs.langlens")
+
+    config = {"configurable": {"thread_id": thread_id}, "callbacks": [callback_handler]}
 
     result = agent.invoke(
         {"messages": [HumanMessage("Hi, my phone screen is cracked")]},
@@ -227,13 +232,17 @@ if __name__ == "__main__":
     )
 
     result = agent.invoke(
-        {"messages": [HumanMessage("The screen is physically cracked from dropping it")]},
+        {
+            "messages": [
+                HumanMessage("The screen is physically cracked from dropping it")
+            ]
+        },
         config,
     )
 
     result = agent.invoke(
         {"messages": [HumanMessage("What should I do?")]},
-        config, 
+        config,
     )
-    for msg in result['messages']:
+    for msg in result["messages"]:
         msg.pretty_print()

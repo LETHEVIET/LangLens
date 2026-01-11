@@ -24,19 +24,19 @@ Configured SvelteKit to use hash-based routing with relative paths:
 export default {
   kit: {
     adapter: adapter({
-      pages: 'build',
-      assets: 'build',
-      fallback: '200.html',
+      pages: "build",
+      assets: "build",
+      fallback: "200.html",
       precompress: false,
-      strict: true
+      strict: true,
     }),
     paths: {
-      relative: true
+      relative: true,
     },
     router: {
-      type: 'hash'  // Use hash-based routing for webview compatibility
-    }
-  }
+      type: "hash", // Use hash-based routing for webview compatibility
+    },
+  },
 };
 ```
 
@@ -48,7 +48,7 @@ export default {
 
 ```typescript
 // In getHtmlForWebview()
-html = html.replace(/\/_app\//g, './_app/');
+html = html.replace(/\/_app\//g, "./_app/");
 html = html.replace(/<base href="[^"]*">/g, '<base href="">');
 ```
 

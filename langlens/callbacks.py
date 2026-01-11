@@ -5,16 +5,18 @@ from uuid import UUID
 from typing import Any, Dict, List, Optional
 from langchain_core.callbacks import BaseCallbackHandler
 
+
 class LangLensCallbackHandler(BaseCallbackHandler):
     """
     A LangChain callback handler that logs trace events to a .langlens file.
     Supports both standard JSON array and JSONL (JSON Lines) formats.
     """
+
     def __init__(self, filename: str = "trace.langlens", use_jsonl: bool = True):
         self.filename = filename
         self.use_jsonl = use_jsonl
         self.logs: List[Dict[str, Any]] = []
-        
+
         # Clear or initialize file if not in JSONL mode
         if not self.use_jsonl:
             self._save_to_file()
@@ -36,7 +38,7 @@ class LangLensCallbackHandler(BaseCallbackHandler):
             return [self._ensure_serializable(item) for item in obj]
         if isinstance(obj, dict):
             return {str(k): self._ensure_serializable(v) for k, v in obj.items()}
-        
+
         # Handle LangChain/Pydantic objects
         if hasattr(obj, "to_json"):
             try:
@@ -48,7 +50,7 @@ class LangLensCallbackHandler(BaseCallbackHandler):
                 return self._ensure_serializable(obj.dict())
             except Exception:
                 pass
-                
+
         # Fallback: Convert to string to avoid crashing the logger
         return f"<{type(obj).__name__}: {str(obj)}>"
 
@@ -56,9 +58,9 @@ class LangLensCallbackHandler(BaseCallbackHandler):
         entry = {
             "timestamp": datetime.utcnow().isoformat(),
             "event": event_name,
-            **self._ensure_serializable(payload)
+            **self._ensure_serializable(payload),
         }
-        
+
         if self.use_jsonl:
             self._append_to_jsonl(entry)
         else:
@@ -77,21 +79,27 @@ class LangLensCallbackHandler(BaseCallbackHandler):
 
     # --- LangChain Callbacks ---
 
-    def on_chain_start(self, serialized: Dict[str, Any], inputs: Dict[str, Any], **kwargs: Any) -> None:
+    def on_chain_start(
+        self, serialized: Dict[str, Any], inputs: Dict[str, Any], **kwargs: Any
+    ) -> None:
         name = (serialized or {}).get("name") or "UnknownChain"
         self._log_event("chain_start", {"name": name, "inputs": inputs, **kwargs})
 
     def on_chain_end(self, outputs: Dict[str, Any], **kwargs: Any) -> None:
         self._log_event("chain_end", {"outputs": outputs, **kwargs})
 
-    def on_chat_model_start(self, serialized: Dict[str, Any], messages: List[List[Any]], **kwargs: Any) -> None:
+    def on_chat_model_start(
+        self, serialized: Dict[str, Any], messages: List[List[Any]], **kwargs: Any
+    ) -> None:
         name = (serialized or {}).get("name") or "UnknownModel"
         self._log_event("llm_start", {"model": name, "messages": messages, **kwargs})
 
     def on_llm_end(self, response: Any, **kwargs: Any) -> None:
         self._log_event("llm_end", {"response": response, **kwargs})
 
-    def on_tool_start(self, serialized: Dict[str, Any], input_str: str, **kwargs: Any) -> None:
+    def on_tool_start(
+        self, serialized: Dict[str, Any], input_str: str, **kwargs: Any
+    ) -> None:
         name = (serialized or {}).get("name") or "UnknownTool"
         self._log_event("tool_start", {"tool": name, "input": input_str, **kwargs})
 

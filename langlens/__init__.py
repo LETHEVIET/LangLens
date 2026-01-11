@@ -1,3 +1,3 @@
 from .callbacks import LangLensCallbackHandler
 
-__all__ = ['LangLensCallbackHandler']
+__all__ = ["LangLensCallbackHandler"]

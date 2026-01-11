@@ -1,5 +1,11 @@
 {
-	"dependencies": {
-		"opentype.js": "^1.3.4"
-	}
+  "name": "langlens-root",
+  "private": true,
+  "scripts": {
+    "format": "uvx ruff format . && pnpm dlx prettier --write .",
+    "lint": "uvx ruff check . && pnpm dlx prettier --check ."
+  },
+  "dependencies": {
+    "opentype.js": "^1.3.4"
+  }
 }
