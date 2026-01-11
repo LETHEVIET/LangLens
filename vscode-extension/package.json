@@ -11,10 +11,10 @@
     "Visualization",
     "Debuggers"
   ],
-  "icon": "media/icon.png",
+  "icon": "icon.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/viet-the-le/langlens"
+    "url": "https://github.com/LETHEVIET/langlens"
   },
   "license": "MIT",
   "activationEvents": [],

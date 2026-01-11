@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/viet-the-le/langlens/master/web-ui/static/logo.svg" alt="LangLens Logo" width="400">
+  <img src="https://raw.githubusercontent.com/LETHEVIET/LangLens/master/web-ui/static/logo.svg" alt="LangLens Logo" width="400">
 </p>
 
 # LangLens
@@ -8,7 +8,7 @@
 
 LangLens is a lightweight visual tracer and debugger designed specifically for LLM-powered applications. It captures detailed execution logs from your agents and chains, allowing you to inspect every LLM call, tool execution, and state transition with precision.
 
-![LangLens Screenshot](https://raw.githubusercontent.com/viet-the-le/langlens/master/assets/screenshoot.png)
+![LangLens Screenshot](https://raw.githubusercontent.com/LETHEVIET/LangLens/master/assets/screenshoot.png)
 
 ---
 

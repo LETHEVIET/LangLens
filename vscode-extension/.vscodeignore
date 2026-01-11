@@ -18,6 +18,7 @@ pnpm-lock.yaml
 *.jsonl
 *.json
 !package.json
+!icon.png
 !media/**
 !dist/**
 !assets/**

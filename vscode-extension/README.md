@@ -2,7 +2,7 @@
 
 LangLens Viewer is an interactive trace viewer for LangChain and LangGraph. It allows you to visualize and debug the execution of your agents and chains directly within VS Code.
 
-![LangLens Viewer Screenshot](https://raw.githubusercontent.com/viet-the-le/langlens/master/assets/screenshoot.png)
+![LangLens Viewer Screenshot](https://raw.githubusercontent.com/LETHEVIET/LangLens/master/assets/screenshoot.png)
 
 ## Features
 
@@ -34,4 +34,4 @@ Initial release of LangLens Viewer for VS Code.
 
 ---
 
-For more information, bug reports, and contributions, visit the [LangLens GitHub Repository](https://github.com/viet-the-le/langlens).
+For more information, bug reports, and contributions, visit the [LangLens GitHub Repository](https://github.com/LETHEVIET/langlens).
