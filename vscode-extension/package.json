@@ -3,7 +3,7 @@
   "publisher": "viet-the-le",
   "displayName": "LangLens Viewer",
   "description": "A visual tracer and debugger for LangChain and LangGraph (.langlens)",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "engines": {
     "vscode": "^1.75.0"
   },
