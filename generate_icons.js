@@ -293,8 +293,22 @@ if (require.main === module) {
     return svg;
   }
 
-  fs.writeFileSync(`${output_dir}/logo.svg`, generate_logo_svg_paths());
-  fs.writeFileSync(`${output_dir}/favicon.svg`, generate_favicon_svg());
+  const output_dir_final = path.join(__dirname, "web-ui", "static");
 
-  console.log("Files created with vector paths.");
+  fs.writeFileSync(`${output_dir_final}/logo.svg`, generate_logo_svg_paths());
+  fs.writeFileSync(`${output_dir_final}/favicon.svg`, generate_favicon_svg());
+
+  console.log("SVG files created with vector paths.");
+
+  // Generate PNG icon for VS Code Marketplace
+  try {
+    const { execSync } = require("child_process");
+    execSync(
+      `magick -background none -size 128x128 "${output_dir_final}/favicon.svg" "${output_dir_final}/icon.png"`,
+      { stdio: "inherit" }
+    );
+    console.log("icon.png generated successfully.");
+  } catch (err) {
+    console.warn("Could not generate icon.png (ImageMagick/magick not found).");
+  }
 }

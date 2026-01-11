@@ -8,11 +8,13 @@
     "vscode": "^1.75.0"
   },
   "categories": [
-    "Other"
+    "Visualization",
+    "Debuggers"
   ],
+  "icon": "media/icon.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/username/langlens"
+    "url": "https://github.com/viet-the-le/langlens"
   },
   "license": "MIT",
   "activationEvents": [],

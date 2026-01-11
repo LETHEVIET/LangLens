@@ -8,6 +8,11 @@ dependencies = [
     "langchain-core",
 ]
 
+[project.urls]
+Homepage = "https://github.com/viet-the-le/langlens"
+Repository = "https://github.com/viet-the-le/langlens"
+Issues = "https://github.com/viet-the-le/langlens/issues"
+
 [tool.setuptools]
 packages = ["langlens", "langlens.viewer"]
 include-package-data = true

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="web-ui/static/logo.svg" alt="LangLens Logo" width="400">
+  <img src="https://raw.githubusercontent.com/viet-the-le/langlens/master/web-ui/static/logo.svg" alt="LangLens Logo" width="400">
 </p>
 
 # LangLens
@@ -8,7 +8,7 @@
 
 LangLens is a lightweight visual tracer and debugger designed specifically for LLM-powered applications. It captures detailed execution logs from your agents and chains, allowing you to inspect every LLM call, tool execution, and state transition with precision.
 
-![LangLens Screenshot](assests/screenshoot.png)
+![LangLens Screenshot](https://raw.githubusercontent.com/viet-the-le/langlens/master/assets/screenshoot.png)
 
 ---
 
@@ -55,53 +55,17 @@ graph TD
 
 ## 📦 Installation
 
-Since LangLens is currently in development and not yet published to PyPI or the VS Code Marketplace, you can install it from source.
+### Python Package
 
-### 1. Build the Web UI
-
-The Python viewer and VS Code extension both require the bundled Web UI.
+Install LangLens via pip:
 
 ```bash
-# Build the UI and copy assets to the Python/VS Code directories
-./build_ui.sh
+pip install langlens
 ```
 
-### 2. Python Package
+### VS Code Extension
 
-Install the package in editable mode from the root directory:
-
-```bash
-pip install -e .
-```
-
-### 3. VS Code Extension
-
-To use the extension locally:
-
-1. Open the `/vscode-extension` folder in VS Code.
-2. Run `pnpm install`.
-3. Press `F5` to start a new Extension Development Host window with the extension loaded.
-
-## 📦 Packaging and Releases
-
-To build both the Python package and the VS Code extension for distribution, you can use the provided script:
-
-```bash
-./scripts/package.sh
-```
-
-This will:
-
-1. Build the Web UI.
-2. Generate Python `.whl` and `.tar.gz` files in `dist/`.
-3. Generate a VS Code `.vsix` file in `dist/`.
-
-### Continuous Integration
-
-This project includes a GitHub Action workflow in `.github/workflows/release.yml`. When you push a tag (e.g., `v0.1.0`), it will automatically:
-
-- Build all packages.
-- Create a GitHub Release with the artifacts attached.
+Install the **LangLens Viewer** from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=viet-the-le.langlens-viewer).
 
 ## 🚀 Quick Start
 
@@ -138,22 +102,31 @@ Simply open any `.langlens` file. The **LangLens Viewer** will automatically ren
 
 ## 🛠️ Development
 
-### Building the Web UI
+### Local Setup
 
-The UI is built with Svelte and Tailwind CSS.
+1. **Build the Web UI**: This bundles the Svelte app and copies assets to the Python and VS Code extension folders.
+
+   ```bash
+   ./build_ui.sh
+   ```
+
+2. **Install Python Package** (Editable mode):
+
+   ```bash
+   pip install -e .
+   ```
+
+3. **VS Code Extension**:
+   - Open the `vscode-extension` folder in VS Code.
+   - Run `pnpm install`.
+   - Press `F5` to start the Extension Development Host.
+
+### Packaging
+
+To build distribution packages manually:
 
 ```bash
-cd web-ui
-pnpm install
-pnpm build
-```
-
-### Building the VS Code Extension
-
-```bash
-cd vscode-extension
-pnpm install
-pnpm run package
+./scripts/package.sh
 ```
 
 ---
