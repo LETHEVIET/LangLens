@@ -45,6 +45,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Note: For actual publishing to PyPI and Marketplace,
-      # you would add steps here using twine and vsce publish
-      # with corresponding repository secrets.
+      - name: Publish to PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          python3 -m pip install twine
+          twine upload dist/langlens-*
+
+      - name: Publish to VS Marketplace
+        run: |
+          cd vscode-extension
+          npx @vscode/vsce publish -p ${{ secrets.VS_MARKETPLACE_TOKEN }}

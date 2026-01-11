@@ -1,5 +1,6 @@
 {
   "name": "langlens-viewer",
+  "publisher": "viet-the-le",
   "displayName": "LangLens Viewer",
   "description": "A visual tracer and debugger for LangChain and LangGraph (.langlens)",
   "version": "0.1.0",
